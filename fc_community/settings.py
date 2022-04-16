@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+import os, json
+from django.core.exceptions import ImproperlyConfigured
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hi8t$^8%jppzqb-w5+=#=yjbj#6elu3x&98c0qzx)6twy5nq@%'
+secret_file = os.path.join(BASE_DIR, '.config_secret/secrets.json') # secrets.json 파일 위치
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    # 시크릿키 가져오기
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} enviroment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+        
+SECRET_KEY = get_secret("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -119,6 +136,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [ # static파일 모은 디렉토리 경로 알려줌
+    os.path.join(BASE_DIR, 'static')  # 프로젝트 폴더 경로 안에 static 폴더                 
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

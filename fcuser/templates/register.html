@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>회원가입</h1>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+        {{ error }}
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+        <form method="POST" action="."> <!-- action="." ? 현재 페이지에 요청, -> 이런 경우 action 생략해도 됨. -->
+            {% csrf_token %} 
+            <!-- cross domain을 막음. 암호화된 키를 form 안에 숨겨 놓고, 키가 없으면 서버가 잘못된 요청이라고 거절 - 장고가 암호화된 hash정보 자동으로 검증해줌 -->
+            <!-- 이거 안 써주면 에러남 -->
+            <div class="mb-3">
+                <label for="username" class="form-label">사용자 이름</label>
+                <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="사용자 이름">
+                {% comment %} <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> {% endcomment %}
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">비밀번호</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
+            </div>           
+            <div class="mb-3">
+                <label for="re-password" class="form-label">비밀번호 확인</label>
+                <input type="password" class="form-control" id="re-password" name="re-password" placeholder="비밀번호 확인">
+            </div>                                     
+            {% comment %} <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div> {% endcomment %}
+            <button type="submit" class="btn btn-primary">등록</button>
+        </form>
+    </div>
+</div>
+<script>
+    var success = '{{success}}'
+    console.log(success)
+    if (success != '') {
+        alert(success)
+    }
+
+</script>
+{% endblock %}
