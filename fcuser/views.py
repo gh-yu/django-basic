@@ -8,13 +8,16 @@ from .models import Fcuser
 # Create your views here.
 def home(request):
     # session의 user키에 값이 있으면 로그인한 유저로 식별
-    user_id = request.session.get('user')
-    
-    if user_id:
-        fcuser = Fcuser.objects.get(pk=user_id)
-        return HttpResponse(fcuser.username)
-    
-    return HttpResponse('Home!')
+    # user_id = request.session.get('user')
+
+    # if user_id:
+    #     fcuser = Fcuser.objects.get(pk=user_id)
+        # return HttpResponse(fcuser.username)
+
+    print(request.session.get('user'))
+    print(request.user) # AnonymousUser
+    # return HttpResponse('Home!')
+    return render(request, "home.html")
 
 def logout(request):
     if request.session.get('user'):
