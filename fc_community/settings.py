@@ -40,9 +40,13 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True # 개발시 True로 해놓음
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # '*'
+    'geoni.pythonanywhere.com' # 서비스를 올릴 주소 (username.pythonanywhere.com)
+]
 
 
 # Application definition
@@ -56,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'board',
     'fcuser',
+    'tag',
 ]
 
 MIDDLEWARE = [
@@ -135,10 +140,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [ # static파일 모은 디렉토리 경로 알려줌
-    os.path.join(BASE_DIR, 'static')  # 프로젝트 폴더 경로 안에 static 폴더                 
-]
+STATIC_URL = '/static/'
+# STATICFILES_DIRS = [ # static파일 모은 디렉토리 경로 알려줌
+#     os.path.join(BASE_DIR, 'static')  # 프로젝트 폴더 경로 안에 static 폴더
+# ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

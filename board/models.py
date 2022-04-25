@@ -12,8 +12,12 @@ class Board(models.Model): # id는 자동으로 생성됨
     # ForeginKey 설정시 on_delete속성 작성 필수
     # models.CASCADE : writer가 가리키고 있는 사용자가 삭제되면 Board도 같이 삭제됨
     # SET_NULL, SET_DEFAULT, DO_NOTHING
+    # 1:1관계
     writer = models.ForeignKey("fcuser.Fcuser", on_delete=models.CASCADE,
                                 verbose_name='작성자')
+    
+    # 태그는 M:N 다대다 관계
+    tags = models.ManyToManyField('tag.Tag', verbose_name='태그')
     
     registered_time = models.DateTimeField(auto_now_add=True, # auto_now_add : Fcuser가 저장되는(save) 시점에 자동으로 현재 시간이 저장됨
                                             verbose_name='등록시간')

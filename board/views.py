@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 
 from board.forms import BoardForm
 from fcuser.models import Fcuser
+from tag.models import Tag
 from .models import Board
 # Create your views here.
 
@@ -34,6 +35,17 @@ def board_write(request):
             board.contents = form.cleaned_data['contents']
             board.writer = fcuser
             board.save()
+
+            tags = form.cleaned_data['tags'].split(",")
+
+            for tag in tags:
+                if not tag:
+                    continue
+
+                _tag, _ = Tag.objects.get_or_create(name=tag)
+                # get_or_create에서 get의 검색 조건에는 포함 안 시키고, create에는 포함시키고 싶으면 defaults속성 값으로 딕셔너리 넣기
+                # _tag, created = Tag.objects.get_or_create(name=tag, defaults={'creator':request.user})
+                board.tags.add(_tag) # add 함수로 추가할 수 있음 <= 1:N관계 또는 M:N관계에서
             
             return redirect('/board/list/')
         
